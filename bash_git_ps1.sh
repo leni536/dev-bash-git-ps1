@@ -267,9 +267,9 @@ __git_prompt() {
     local last_exit="$?" # keep here.. so we get the last command
 
     # setup PS1
-    local host="${GREY}\h:${RESET}"
-    local dir="${CYAN}\W${RESET}" 
-    PS1="[$host $dir]"
+    local host="\h:"
+    local dir=`pwd | sed -e "s/^${HOME//\//\\/}/~/" -e 's/^.\{4,\}\(\(\/[^\/]*\)\{3\}\)$/...\1/'`
+    PS1="${CYAN}[$host $dir]${RESET}"
 
     # when in git repository
     local gitdir="$(__git_dirname)"
@@ -325,6 +325,6 @@ __git_prompt() {
         marker="$RED"
     fi
     marker="${marker}\$${RESET}"
-    PS1="${PS1} → \n\n${marker} "
+    PS1="${PS1} → \n${marker} "
 }
 PROMPT_COMMAND=__git_prompt
